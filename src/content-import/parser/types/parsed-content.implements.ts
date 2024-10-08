@@ -24,7 +24,7 @@ export class MarkdownContent extends ParsedContent {
 export function createParsedContent(params: {
   contentType: ContentType;
   content: string;
-}) {
+}): ParsedContent {
   switch (params.contentType) {
     case ContentType["LATEX-INLINE"]:
       return new LaTeXInlineContent(params);

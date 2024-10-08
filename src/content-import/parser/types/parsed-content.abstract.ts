@@ -8,6 +8,13 @@ export abstract class ParsedContent {
   constructor(params: { content: string }) {
     this.content = params.content;
   }
-  content: string;
+  protected content: string;
   abstract contentType: ContentType;
+
+  getContentLength(): number {
+    return this.content.length;
+  }
+  getContent(): string {
+    return this.content;
+  }
 }

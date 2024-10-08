@@ -22,22 +22,22 @@ describe("ContentParser", () => {
     const content = `# Title\n\n## Subtitle\n\nSome content.`;
     const parsedContent = parser.parse(content)[0];
     expect(parsedContent).toBeInstanceOf(MarkdownContent);
-    expect(parsedContent.content).toBe(content);
+    expect(parsedContent.getContent()).toBe(content);
   });
 
   it("should parse content with LaTeX", () => {
-    const originalContent = `x^2`;
-    const inputContent = inlineDelimiter + originalContent + inlineDelimiter;
-    const parsedContent = parser.parse(inputContent)[0];
+    const expectedContent = `x^2`;
+    const originalContent = inlineDelimiter + expectedContent + inlineDelimiter;
+    const parsedContent = parser.parse(originalContent)[0];
     expect(parsedContent).toBeInstanceOf(LaTeXInlineContent);
-    expect(parsedContent.content).toBe(originalContent);
+    expect(parsedContent.getContent()).toBe(expectedContent);
   });
 
   it("should parse content with LaTeX block", () => {
-    const originalContent = `x^2`;
-    const inputContent = blockDelimiter + originalContent + blockDelimiter;
-    const parsedContent = parser.parse(inputContent)[0];
+    const expectedContent = `x^2`;
+    const originalContent = blockDelimiter + expectedContent + blockDelimiter;
+    const parsedContent = parser.parse(originalContent)[0];
     expect(parsedContent).toBeInstanceOf(LaTeXBlockContent);
-    expect(parsedContent.content).toBe(originalContent);
+    expect(parsedContent.getContent()).toBe(expectedContent);
   });
 });
