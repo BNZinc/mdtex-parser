@@ -1,4 +1,8 @@
-import { ContentType, ParsedContent } from "./types/parsed-content.abstract";
+import {
+  ContentProperties,
+  ContentType,
+  ParsedContent,
+} from "./types/parsed-content.abstract";
 import { createParsedContent } from "./types/parsed-content.implements";
 
 class ContentBuffer {
@@ -13,23 +17,22 @@ class ContentBuffer {
   append(content: string): void {
     this.buffer += content;
   }
-  flush(): ParsedContent {
+  flush(properties?: ContentProperties[]): ParsedContent {
     const content = this.buffer;
     const mode = this.mode;
 
-    this.mode = this.defaultMode;
     this.buffer = "";
 
     return createParsedContent({
       contentType: mode,
       content: content,
+      properties,
     });
   }
   toggleMode(mode: ContentType): void {
     if (this.mode === mode) {
       this.mode = ContentType["MARKDOWN"];
-    }
-    this.mode = mode;
+    } else this.mode = mode;
   }
 }
 
@@ -54,32 +57,34 @@ export class ContentParser {
     this.blockMathDelimiter = ParserParams.blockMathDelimiter;
   }
   appendResult(parsedContent: ParsedContent) {
-    if (parsedContent.getContentLength() > 0) {
+    if (parsedContent.hasAnyPayload()) {
       this.toExportContents.push(parsedContent);
     }
   }
 
-  parse(content: string): ParsedContent[] {
-    let charIndex = 0;
+  parse(fullContents: string): ParsedContent[] {
+    const lineSplitContents = fullContents.split("\n");
 
-    while (charIndex < content.length) {
-      if (
-        content.substring(charIndex, charIndex + 2) === this.blockMathDelimiter
-      ) {
-        this.appendResult(this.buffer.flush());
-        this.buffer.toggleMode(ContentType["LATEX-BLOCK"]);
-        charIndex += 2;
-      } else if (content[charIndex] === this.inlineMathDelimiter) {
-        this.appendResult(this.buffer.flush());
-        this.buffer.toggleMode(ContentType["LATEX-INLINE"]);
-        charIndex += 1;
-      } else {
-        this.buffer.append(content[charIndex]);
-        charIndex += 1;
+    lineSplitContents.forEach((line) => {
+      let charIndex = 0;
+      while (charIndex < line.length) {
+        if (
+          line.substring(charIndex, charIndex + 2) === this.blockMathDelimiter
+        ) {
+          this.appendResult(this.buffer.flush());
+          this.buffer.toggleMode(ContentType.LATEX_BLOCK);
+          charIndex += 2;
+        } else if (line[charIndex] === this.inlineMathDelimiter) {
+          this.appendResult(this.buffer.flush());
+          this.buffer.toggleMode(ContentType.LATEX_INLINE);
+          charIndex += 1;
+        } else {
+          this.buffer.append(line[charIndex]);
+          charIndex += 1;
+        }
       }
-    }
-
-    this.appendResult(this.buffer.flush());
+      this.appendResult(this.buffer.flush([ContentProperties.HAS_NEWLINE]));
+    });
 
     return this.toExportContents;
   }
