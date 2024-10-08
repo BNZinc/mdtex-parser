@@ -1,12 +1,17 @@
 import latexKeywords from "../resource/latex-keywords.json";
-
-export const enum ContentType {
+export function getEnumKeyByValue(
+  enumObj: any,
+  value: any
+): string | undefined {
+  return Object.keys(enumObj).find((key) => enumObj[key] === value);
+}
+export enum ContentType {
   "LATEX_INLINE",
   "LATEX_BLOCK",
   "MARKDOWN",
 }
 
-export const enum ContentProperties {
+export enum ContentProperties {
   "HAS_NEWLINE",
   "HAS_TEX",
   "HAS_BEGINNING_BLOCK",
@@ -50,6 +55,9 @@ export abstract class ParsedContent {
 
   addProperty(property: ContentProperties) {
     this.properties.push(property);
+  }
+  getProperties(): ContentProperties[] {
+    return this.properties;
   }
 
   hasAnyPayload(): boolean {

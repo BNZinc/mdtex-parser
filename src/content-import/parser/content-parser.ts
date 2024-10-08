@@ -17,6 +17,9 @@ class ContentBuffer {
   append(content: string): void {
     this.buffer += content;
   }
+  isDefaultMode(): boolean {
+    return this.mode === this.defaultMode;
+  }
   flush(properties?: ContentProperties[]): ParsedContent {
     const content = this.buffer;
     const mode = this.mode;
@@ -31,7 +34,7 @@ class ContentBuffer {
   }
   toggleMode(mode: ContentType): void {
     if (this.mode === mode) {
-      this.mode = ContentType["MARKDOWN"];
+      this.mode = this.defaultMode;
     } else this.mode = mode;
   }
 }
@@ -83,8 +86,11 @@ export class ContentParser {
           charIndex += 1;
         }
       }
-      this.appendResult(this.buffer.flush([ContentProperties.HAS_NEWLINE]));
+      if (this.buffer.isDefaultMode()) {
+        this.appendResult(this.buffer.flush([ContentProperties.HAS_NEWLINE]));
+      }
     });
+    this.appendResult(this.buffer.flush([ContentProperties.HAS_NEWLINE]));
 
     return this.toExportContents;
   }
