@@ -72,6 +72,10 @@ export abstract class ParsedContent implements IParsedContent {
     return this.contentType;
   }
   createOverridedContent(contentType: ContentType): IParsedContent {
+    if (this.contentType === contentType) {
+      return this;
+    }
+
     return createParsedContent({
       contentType,
       content: this.content,
