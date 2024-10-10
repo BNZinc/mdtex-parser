@@ -5,16 +5,16 @@ import {
 import { createParsedContent } from "../../../parsed-content-types/parsed-content.factory";
 import { IParsedContent } from "../../../parsed-content-types/parsed-content.interface";
 import { ICorrectionRule } from "../rule.abstract";
-import { CoorectBlockRange } from "./correct-block-range.rule";
+import { CorrectBlockRange } from "./correct-block-range.rule";
 
 describe("CorrectionRule", () => {
   let correctionRule: ICorrectionRule;
 
   beforeEach(() => {
-    correctionRule = new CoorectBlockRange();
+    correctionRule = new CorrectBlockRange();
   });
 
-  it('should log "Has beginning block" for content with HAS_BEGINNING_BLOCK property', () => {
+  it("MARKDOWN이지만 begin 문이 있는 경우와 같이 컨텐츠의 타입과 프로퍼티의 속성이 일치하지 않는 경우, 타입을 변경", () => {
     const content: IParsedContent[] = [
       createParsedContent({
         contentType: ContentType.MARKDOWN,

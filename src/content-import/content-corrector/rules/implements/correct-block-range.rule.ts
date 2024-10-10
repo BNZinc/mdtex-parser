@@ -5,7 +5,7 @@ import {
 import { IParsedContent } from "../../../parsed-content-types/parsed-content.interface";
 import { CorrectionRule, ICorrectionRule } from "../rule.abstract";
 
-export class CoorectBlockRange
+export class CorrectBlockRange
   extends CorrectionRule
   implements ICorrectionRule
 {
@@ -14,14 +14,11 @@ export class CoorectBlockRange
     let startingIndex: number = content.length - 1;
     let endingIndex = content.length - 1;
     content.forEach((content, currentIndex) => {
-      if (
-        content.getProperties().includes(ContentProperties.HAS_BEGINNING_BLOCK)
-      ) {
+      const currentProperties = content.getProperties();
+      if (currentProperties.includes(ContentProperties.HAS_BEGINNING_BLOCK)) {
         startingIndex = currentIndex;
       }
-      if (
-        content.getProperties().includes(ContentProperties.HAS_ENDING_BLOCK)
-      ) {
+      if (currentProperties.includes(ContentProperties.HAS_ENDING_BLOCK)) {
         endingIndex = currentIndex;
       }
 
