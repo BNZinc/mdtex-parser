@@ -1,30 +1,8 @@
-import {
-  ContentProperties,
-  ContentPropertyPayload,
-  ContentType,
-} from "../parsed-content-types/enum/content-enums";
 import { IParsedContent } from "../parsed-content-types/parsed-content.interface";
-export type CorrectingContentMap = {
-  contentType: ContentType;
-  properties: ContentProperties[];
-  propertyPayload: ContentPropertyPayload;
-};
-
 export class ContentCorrector {
-  typeMap: CorrectingContentMap[] = [];
-  constructor(private readonly contents: IParsedContent[]) {
-    contents.forEach((content) => {
-      this.typeMap.push({
-        contentType: content.getContentType(),
-        properties: content.getProperties(),
-        propertyPayload: content.getPayload(),
-      });
-    });
+  correctingContent: IParsedContent[] = [];
+  constructor(contents: IParsedContent[]) {
+    this.correctingContent = contents;
   }
-  correct() {
-    this.typeMap.forEach((element) => {
-      console.log(JSON.stringify(element));
-    });
-    return this.typeMap.length;
-  }
+  correct() {}
 }
