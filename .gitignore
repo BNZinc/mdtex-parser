@@ -113,6 +113,8 @@ dist
 # FuseBox cache
 .fusebox/
 
+.DS_Store
+
 # DynamoDB Local files
 .dynamodb/
 
