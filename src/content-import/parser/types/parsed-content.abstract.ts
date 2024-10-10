@@ -43,12 +43,7 @@ export abstract class ParsedContent {
       }
     }
   }
-  protected properyPayload: { [key in ContentProperties]: string } = {
-    [ContentProperties["HAS_NEWLINE"]]: "",
-    [ContentProperties["HAS_TEX"]]: "",
-    [ContentProperties["HAS_BEGINNING_BLOCK"]]: "",
-    [ContentProperties["HAS_ENDING_BLOCK"]]: "",
-  };
+  protected properyPayload: { [key in ContentProperties]?: string } = {};
   protected properties: ContentProperties[] = [];
   protected content: string;
   abstract contentType: ContentType;
