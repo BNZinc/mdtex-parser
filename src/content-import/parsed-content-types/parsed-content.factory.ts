@@ -1,4 +1,8 @@
-import { ContentProperties, ContentType } from "./enum/content-enums";
+import {
+  ContentProperties,
+  ContentPropertyPayload,
+  ContentType,
+} from "./enum/content-enums";
 import { ParsedContent } from "./parsed-content.abstract";
 import {
   LaTeXBlockContent,
@@ -17,9 +21,16 @@ export function createParsedContent(params: {
   contentType: ContentType;
   content: string;
   properties?: ContentProperties[];
+  propertyPayload?: ContentPropertyPayload;
   overridingContent?: ParsedContent;
 }): IParsedContent {
-  const { contentType, content, properties, overridingContent } = params;
+  const {
+    contentType,
+    content,
+    properties,
+    propertyPayload,
+    overridingContent,
+  } = params;
   const ParsedContent = typeMap[contentType];
   if (!ParsedContent) {
     throw new Error(`Unknown content type: ${contentType}`);
@@ -28,6 +39,11 @@ export function createParsedContent(params: {
     { content },
     overridingContent
   );
-  (properties ?? []).forEach((property) => parsedContent.addProperty(property));
+  (properties ?? []).forEach((property) =>
+    parsedContent.addProperty(
+      property,
+      propertyPayload !== undefined ? propertyPayload[property] : undefined
+    )
+  );
   return parsedContent;
 }

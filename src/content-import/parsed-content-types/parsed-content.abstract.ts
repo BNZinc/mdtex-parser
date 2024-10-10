@@ -45,8 +45,11 @@ export abstract class ParsedContent implements IParsedContent {
   protected content: string;
   protected abstract contentType: ContentType;
 
-  addProperty(property: ContentProperties): void {
+  addProperty(property: ContentProperties, payload?: string): void {
     this.properties.push(property);
+    if (payload) {
+      this.properyPayload[property] = payload;
+    }
   }
   getProperties(): ContentProperties[] {
     return this.properties;
@@ -73,6 +76,8 @@ export abstract class ParsedContent implements IParsedContent {
       contentType,
       content: this.content,
       properties: this.properties,
+      propertyPayload: this.properyPayload,
+      overridingContent: this,
     });
   }
 }
