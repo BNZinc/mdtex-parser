@@ -1,3 +1,4 @@
+import { expectContent } from "../../../../utils/jest/expect-content-containing";
 import {
   ContentProperties,
   ContentType,
@@ -49,35 +50,18 @@ describe("CorrectionRule", () => {
       };
     });
 
-    expect(filteredResult).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "A",
-          properties: [ContentProperties.HAS_BEGINNING_BLOCK],
-          propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" },
-        }),
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "B",
-          properties: [],
-        }),
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "C",
-          properties: [ContentProperties.HAS_ENDING_BLOCK],
-        }),
-      ])
+    expectContent(
+      filteredResult,
+      ContentType.LATEX_BLOCK,
+      "A",
+      [ContentProperties.HAS_BEGINNING_BLOCK],
+      { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" }
     );
-    expect(filteredResult).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          contentType: ContentType.MARKDOWN,
-          content: "D",
-          properties: [],
-        }),
-      ])
-    );
+    expectContent(filteredResult, ContentType.LATEX_BLOCK, "B", []);
+    expectContent(filteredResult, ContentType.LATEX_BLOCK, "C", [
+      ContentProperties.HAS_ENDING_BLOCK,
+    ]);
+    expectContent(filteredResult, ContentType.MARKDOWN, "D", []);
   });
 
   it("Block이 두개 이상 포함되어있을 때, 시작과 끝을 판단해서 올바른 위치만 블록으로 표시해야 함", () => {
@@ -143,69 +127,46 @@ describe("CorrectionRule", () => {
         propertyPayload: content.getPayload(),
       };
     });
-
-    expect(filteredResult).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "A",
-          properties: [ContentProperties.HAS_BEGINNING_BLOCK],
-          propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" },
-        }),
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "B",
-          properties: [ContentProperties.HAS_BEGINNING_BLOCK],
-          propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "array" },
-        }),
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "C",
-          properties: [],
-        }),
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "D",
-          properties: [ContentProperties.HAS_ENDING_BLOCK],
-          propertyPayload: { [ContentProperties.HAS_ENDING_BLOCK]: "array" },
-        }),
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "E",
-          properties: [ContentProperties.HAS_ENDING_BLOCK],
-          propertyPayload: { [ContentProperties.HAS_ENDING_BLOCK]: "align" },
-        }),
-      ])
+    expectContent(
+      filteredResult,
+      ContentType.LATEX_BLOCK,
+      "A",
+      [ContentProperties.HAS_BEGINNING_BLOCK],
+      { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" }
     );
-    expect(filteredResult).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          contentType: ContentType.MARKDOWN,
-          content: "F",
-          properties: [],
-        }),
-      ])
+    expectContent(
+      filteredResult,
+      ContentType.LATEX_BLOCK,
+      "B",
+      [ContentProperties.HAS_BEGINNING_BLOCK],
+      { [ContentProperties.HAS_BEGINNING_BLOCK]: "array" }
     );
-
-    expect(filteredResult).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "G",
-          properties: [ContentProperties.HAS_BEGINNING_BLOCK],
-          propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" },
-        }),
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "H",
-          properties: [],
-        }),
-        expect.objectContaining({
-          contentType: ContentType.LATEX_BLOCK,
-          content: "I",
-          properties: [ContentProperties.HAS_ENDING_BLOCK],
-        }),
-      ])
+    expectContent(filteredResult, ContentType.LATEX_BLOCK, "C", []);
+    expectContent(
+      filteredResult,
+      ContentType.LATEX_BLOCK,
+      "D",
+      [ContentProperties.HAS_ENDING_BLOCK],
+      { [ContentProperties.HAS_ENDING_BLOCK]: "array" }
     );
+    expectContent(
+      filteredResult,
+      ContentType.LATEX_BLOCK,
+      "E",
+      [ContentProperties.HAS_ENDING_BLOCK],
+      { [ContentProperties.HAS_ENDING_BLOCK]: "align" }
+    );
+    expectContent(filteredResult, ContentType.MARKDOWN, "F", []);
+    expectContent(
+      filteredResult,
+      ContentType.LATEX_BLOCK,
+      "G",
+      [ContentProperties.HAS_BEGINNING_BLOCK],
+      { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" }
+    );
+    expectContent(filteredResult, ContentType.LATEX_BLOCK, "H", []);
+    expectContent(filteredResult, ContentType.LATEX_BLOCK, "I", [
+      ContentProperties.HAS_ENDING_BLOCK,
+    ]);
   });
 });
