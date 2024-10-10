@@ -5,23 +5,58 @@ import {
 import { IParsedContent } from "../../../parsed-content-types/parsed-content.interface";
 import { CorrectionRule, ICorrectionRule } from "../rule.abstract";
 
+interface Range {
+  start: number;
+  end: number;
+}
+
 export class CorrectBlockRange
   extends CorrectionRule
   implements ICorrectionRule
 {
+  protected ruleName: string = CorrectBlockRange.name;
+
   _onApply(content: IParsedContent[]): IParsedContent[] {
-    const correctingContents: IParsedContent[] = [];
-    let startingIndex: number = content.length - 1;
-    let endingIndex = content.length - 1;
+    const ranges: Range[] = [];
+    const stack: number[] = [];
+
     content.forEach((content, currentIndex) => {
       const currentProperties = content.getProperties();
       if (currentProperties.includes(ContentProperties.HAS_BEGINNING_BLOCK)) {
-        startingIndex = currentIndex;
+        stack.push(currentIndex);
       }
       if (currentProperties.includes(ContentProperties.HAS_ENDING_BLOCK)) {
-        endingIndex = currentIndex;
+        const startIndex = stack.pop();
+        if (startIndex !== undefined) {
+          ranges.push({ start: startIndex, end: currentIndex });
+        }
       }
+    });
 
+    return this.applyBlockRanges(content, ranges);
+  }
+
+  private applyBlockRanges(
+    content: IParsedContent[],
+    ranges: Range[]
+  ): IParsedContent[] {
+    let result = content;
+
+    ranges.forEach(({ start, end }) => {
+      result = this.setBlockRange(result, start, end);
+    });
+
+    return result;
+  }
+
+  private setBlockRange(
+    content: IParsedContent[],
+    startingIndex: number,
+    endingIndex: number
+  ): IParsedContent[] {
+    const correctingContents: IParsedContent[] = [];
+
+    content.forEach((content, currentIndex) => {
       if (currentIndex >= startingIndex && currentIndex <= endingIndex) {
         correctingContents.push(
           content.createOverridedContent(ContentType.LATEX_BLOCK)

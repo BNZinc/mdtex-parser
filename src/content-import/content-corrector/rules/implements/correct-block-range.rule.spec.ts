@@ -79,4 +79,133 @@ describe("CorrectionRule", () => {
       ])
     );
   });
+
+  it("Block이 두개 이상 포함되어있을 때, 시작과 끝을 판단해서 올바른 위치만 블록으로 표시해야 함", () => {
+    const content: IParsedContent[] = [
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "A",
+        properties: [ContentProperties.HAS_BEGINNING_BLOCK],
+        propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" },
+      }),
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "B",
+        properties: [ContentProperties.HAS_BEGINNING_BLOCK],
+        propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "array" },
+      }),
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "C",
+        properties: [],
+      }),
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "D",
+        properties: [ContentProperties.HAS_ENDING_BLOCK],
+        propertyPayload: { [ContentProperties.HAS_ENDING_BLOCK]: "array" },
+      }),
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "E",
+        properties: [ContentProperties.HAS_ENDING_BLOCK],
+        propertyPayload: { [ContentProperties.HAS_ENDING_BLOCK]: "align" },
+      }),
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "F",
+        properties: [],
+      }),
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "G",
+        properties: [ContentProperties.HAS_BEGINNING_BLOCK],
+        propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" },
+      }),
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "H",
+        properties: [],
+      }),
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "I",
+        properties: [ContentProperties.HAS_ENDING_BLOCK],
+      }),
+    ];
+
+    const result = correctionRule.apply(content);
+    const filteredResult = result.map((content) => {
+      return {
+        contentType: content.getContentType(),
+        content: content.getContent(),
+        properties: content.getProperties(),
+        propertyPayload: content.getPayload(),
+      };
+    });
+
+    expect(filteredResult).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          contentType: ContentType.LATEX_BLOCK,
+          content: "A",
+          properties: [ContentProperties.HAS_BEGINNING_BLOCK],
+          propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" },
+        }),
+        expect.objectContaining({
+          contentType: ContentType.LATEX_BLOCK,
+          content: "B",
+          properties: [ContentProperties.HAS_BEGINNING_BLOCK],
+          propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "array" },
+        }),
+        expect.objectContaining({
+          contentType: ContentType.LATEX_BLOCK,
+          content: "C",
+          properties: [],
+        }),
+        expect.objectContaining({
+          contentType: ContentType.LATEX_BLOCK,
+          content: "D",
+          properties: [ContentProperties.HAS_ENDING_BLOCK],
+          propertyPayload: { [ContentProperties.HAS_ENDING_BLOCK]: "array" },
+        }),
+        expect.objectContaining({
+          contentType: ContentType.LATEX_BLOCK,
+          content: "E",
+          properties: [ContentProperties.HAS_ENDING_BLOCK],
+          propertyPayload: { [ContentProperties.HAS_ENDING_BLOCK]: "align" },
+        }),
+      ])
+    );
+    expect(filteredResult).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          contentType: ContentType.MARKDOWN,
+          content: "F",
+          properties: [],
+        }),
+      ])
+    );
+
+    expect(filteredResult).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          contentType: ContentType.LATEX_BLOCK,
+          content: "G",
+          properties: [ContentProperties.HAS_BEGINNING_BLOCK],
+          propertyPayload: { [ContentProperties.HAS_BEGINNING_BLOCK]: "align" },
+        }),
+        expect.objectContaining({
+          contentType: ContentType.LATEX_BLOCK,
+          content: "H",
+          properties: [],
+        }),
+        expect.objectContaining({
+          contentType: ContentType.LATEX_BLOCK,
+          content: "I",
+          properties: [ContentProperties.HAS_ENDING_BLOCK],
+        }),
+      ])
+    );
+  });
 });
