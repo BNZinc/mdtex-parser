@@ -2,11 +2,7 @@ import { ContentProperties } from "../../parsed-content-types/enum/content-enums
 import { IParsedContent } from "../../parsed-content-types/parsed-content.interface";
 
 export abstract class CorrectionRule implements ICorrectionRule {
-  protected interestingProperties: ContentProperties[] = [
-    ContentProperties.HAS_BEGINNING_BLOCK,
-    ContentProperties.HAS_ENDING_BLOCK,
-    ContentProperties.HAS_TEX,
-  ];
+  protected abstract ruleName: string;
   constructor() {}
 
   protected abstract _onApply(content: IParsedContent[]): IParsedContent[];
