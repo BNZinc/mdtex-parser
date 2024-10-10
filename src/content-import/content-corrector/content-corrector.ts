@@ -2,8 +2,8 @@ import {
   ContentProperties,
   ContentPropertyPayload,
   ContentType,
-} from "../types/enum/content-enums";
-import { IParsedContent } from "../types/parsed-content.interface";
+} from "../parsed-content-types/enum/content-enums";
+import { IParsedContent } from "../parsed-content-types/parsed-content.interface";
 export type CorrectingContentMap = {
   contentType: ContentType;
   properties: ContentProperties[];

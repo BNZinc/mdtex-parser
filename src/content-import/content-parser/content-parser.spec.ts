@@ -1,10 +1,13 @@
 import { ContentParser } from "./content-parser";
-import { getEnumKeyByValue } from "../types/parsed-content.abstract";
+import { getEnumKeyByValue } from "../parsed-content-types/parsed-content.abstract";
 import {
   LaTeXBlockContent,
   LaTeXInlineContent,
-} from "../types/parsed-content.implements";
-import { ContentProperties, ContentType } from "../types/enum/content-enums";
+} from "../parsed-content-types/parsed-content.implements";
+import {
+  ContentProperties,
+  ContentType,
+} from "../parsed-content-types/enum/content-enums";
 
 const inlineDelimiter = "$";
 const blockDelimiter = "$$";

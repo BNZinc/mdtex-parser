@@ -1,6 +1,9 @@
-import { ContentProperties, ContentType } from "../types/enum/content-enums";
-import { createParsedContent } from "../types/parsed-content.factory";
-import { IParsedContent } from "../types/parsed-content.interface";
+import {
+  ContentProperties,
+  ContentType,
+} from "../parsed-content-types/enum/content-enums";
+import { createParsedContent } from "../parsed-content-types/parsed-content.factory";
+import { IParsedContent } from "../parsed-content-types/parsed-content.interface";
 
 class ContentBuffer {
   constructor(params: { defaultMode?: ContentType }) {
