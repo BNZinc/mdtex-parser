@@ -33,18 +33,9 @@ export class CorrectBlockRange
       }
     });
 
-    return this.applyBlockRanges(content, ranges);
-  }
-
-  private applyBlockRanges(
-    content: IParsedContent[],
-    ranges: Range[]
-  ): IParsedContent[] {
-    let result = content;
-
-    ranges.forEach(({ start, end }) => {
-      result = this.setBlockRange(result, start, end);
-    });
+    const result = ranges.reduce((acc, { start, end }) => {
+      return this.setBlockRange(acc, start, end);
+    }, content);
 
     return result;
   }
