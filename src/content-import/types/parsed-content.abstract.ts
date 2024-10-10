@@ -17,6 +17,7 @@ export enum ContentProperties {
   "HAS_BEGINNING_BLOCK",
   "HAS_ENDING_BLOCK",
 }
+export type ContentPropertyPayload = { [key in ContentProperties]?: string };
 
 export abstract class ParsedContent {
   constructor(params: { content: string }) {
@@ -43,16 +44,19 @@ export abstract class ParsedContent {
       }
     }
   }
-  protected properyPayload: { [key in ContentProperties]?: string } = {};
+  protected properyPayload: ContentPropertyPayload = {};
   protected properties: ContentProperties[] = [];
   protected content: string;
-  abstract contentType: ContentType;
+  protected abstract contentType: ContentType;
 
   addProperty(property: ContentProperties) {
     this.properties.push(property);
   }
   getProperties(): ContentProperties[] {
     return this.properties;
+  }
+  getPayload(): ContentPropertyPayload {
+    return this.properyPayload;
   }
 
   hasAnyPayload(): boolean {
@@ -64,5 +68,8 @@ export abstract class ParsedContent {
   }
   getContent(): string {
     return this.content;
+  }
+  getContentType(): ContentType {
+    return this.contentType;
   }
 }

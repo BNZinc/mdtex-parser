@@ -3,15 +3,15 @@ import {
   ContentProperties,
   ContentType,
   getEnumKeyByValue,
-} from "./types/parsed-content.abstract";
+} from "../types/parsed-content.abstract";
 import {
   LaTeXBlockContent,
   LaTeXInlineContent,
-  MarkdownContent,
-} from "./types/parsed-content.implements";
+} from "../types/parsed-content.implements";
 
 const inlineDelimiter = "$";
 const blockDelimiter = "$$";
+const hideLog = true;
 describe("ContentParser", () => {
   let parser: ContentParser;
 
@@ -156,21 +156,24 @@ $$
 위의 (가), (나)에 알맞은 식을 각각 $f(r)$, $g(r)$라 하고, (다)에 알맞은 식에 $r=2$, $m=3$을 대입한 값을 $p$라 할 때, $\\dfrac{f(p)}{g(p+1)}$ 의 값은?
 ① 484  ② 488  ③ 492  ④ 496  ⑤ 500`;
     const parsedContents = parser.parse(originalContent);
-    console.log(
-      parsedContents
-        .map((parsedContent) => {
-          const content = parsedContent.getContent();
-          const contentType = getEnumKeyByValue(
-            ContentType,
-            parsedContent.contentType
-          );
-          const properties = parsedContent
-            .getProperties()
-            .map((property) => getEnumKeyByValue(ContentProperties, property));
-          return `${content},${contentType},${properties.join("|")}`;
-        })
-        .join("\n")
-    );
+    hideLog ||
+      console.log(
+        parsedContents
+          .map((parsedContent) => {
+            const content = parsedContent.getContent();
+            const contentType = getEnumKeyByValue(
+              ContentType,
+              parsedContent.getContentType()
+            );
+            const properties = parsedContent
+              .getProperties()
+              .map((property) =>
+                getEnumKeyByValue(ContentProperties, property)
+              );
+            return `${content},${contentType},${properties.join("|")}`;
+          })
+          .join("\n")
+      );
     expect(parsedContents).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

@@ -2,8 +2,8 @@ import {
   ContentProperties,
   ContentType,
   ParsedContent,
-} from "./types/parsed-content.abstract";
-import { createParsedContent } from "./types/parsed-content.implements";
+} from "../types/parsed-content.abstract";
+import { createParsedContent } from "../types/parsed-content.implements";
 
 class ContentBuffer {
   constructor(params: { defaultMode?: ContentType }) {
