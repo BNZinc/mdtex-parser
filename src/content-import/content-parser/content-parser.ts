@@ -66,6 +66,7 @@ export class ContentParser {
   }
 
   parse(fullContents: string): ParsedContent[] {
+    this.toExportContents = [];
     const lineSplitContents = fullContents.split("\n");
 
     lineSplitContents.forEach((line) => {
