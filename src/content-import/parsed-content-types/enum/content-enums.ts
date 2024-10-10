@@ -9,5 +9,6 @@ export enum ContentProperties {
   "HAS_TEX",
   "HAS_BEGINNING_BLOCK",
   "HAS_ENDING_BLOCK",
+  "HAS_BLOCK_ONLY_CONTENT",
 }
 export type ContentPropertyPayload = { [key in ContentProperties]?: string };
