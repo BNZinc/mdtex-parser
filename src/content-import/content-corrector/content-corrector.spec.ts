@@ -10,8 +10,8 @@ describe("content-corrector", () => {
     expect(true).toBeTruthy();
   });
 
-  it("should be able to create a new instance", () => {
+  it("should return correct happen times", () => {
     const result = contentCorrector.correct();
-    expect(result).toBeTruthy();
+    expect(result).toBe(0);
   });
 });

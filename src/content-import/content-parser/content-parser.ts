@@ -1,9 +1,6 @@
-import {
-  ContentProperties,
-  ContentType,
-  ParsedContent,
-} from "../types/parsed-content.abstract";
-import { createParsedContent } from "../types/parsed-content.implements";
+import { ContentProperties, ContentType } from "../types/enum/content-enums";
+import { createParsedContent } from "../types/parsed-content.factory";
+import { IParsedContent } from "../types/parsed-content.interface";
 
 class ContentBuffer {
   constructor(params: { defaultMode?: ContentType }) {
@@ -20,7 +17,7 @@ class ContentBuffer {
   isDefaultMode(): boolean {
     return this.mode === this.defaultMode;
   }
-  flush(properties?: ContentProperties[]): ParsedContent {
+  flush(properties?: ContentProperties[]): IParsedContent {
     const content = this.buffer;
     const mode = this.mode;
 
@@ -47,7 +44,7 @@ export class ContentParser {
   buffer: ContentBuffer;
   inlineMathDelimiter: string;
   blockMathDelimiter: string;
-  toExportContents: ParsedContent[] = [];
+  toExportContents: IParsedContent[] = [];
 
   constructor(
     ParserParams: ParserParams = {
@@ -59,13 +56,13 @@ export class ContentParser {
     this.inlineMathDelimiter = ParserParams.inlineMathDelimiter;
     this.blockMathDelimiter = ParserParams.blockMathDelimiter;
   }
-  appendResult(parsedContent: ParsedContent) {
+  appendResult(parsedContent: IParsedContent) {
     if (parsedContent.hasAnyPayload()) {
       this.toExportContents.push(parsedContent);
     }
   }
 
-  parse(fullContents: string): ParsedContent[] {
+  parse(fullContents: string): IParsedContent[] {
     this.toExportContents = [];
     const lineSplitContents = fullContents.split("\n");
 

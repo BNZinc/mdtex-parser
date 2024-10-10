@@ -1,27 +1,23 @@
 import latexKeywords from "../resource/latex-keywords.json";
+import {
+  ContentProperties,
+  ContentPropertyPayload,
+  ContentType,
+} from "./enum/content-enums";
+import { createParsedContent } from "./parsed-content.factory";
+import { IParsedContent } from "./parsed-content.interface";
 export function getEnumKeyByValue(
   enumObj: any,
   value: any
 ): string | undefined {
   return Object.keys(enumObj).find((key) => enumObj[key] === value);
 }
-export enum ContentType {
-  "LATEX_INLINE",
-  "LATEX_BLOCK",
-  "MARKDOWN",
-}
 
-export enum ContentProperties {
-  "HAS_NEWLINE",
-  "HAS_TEX",
-  "HAS_BEGINNING_BLOCK",
-  "HAS_ENDING_BLOCK",
-}
-export type ContentPropertyPayload = { [key in ContentProperties]?: string };
-
-export abstract class ParsedContent {
-  constructor(params: { content: string }) {
+export abstract class ParsedContent implements IParsedContent {
+  overridingContent?: ParsedContent;
+  constructor(params: { content: string }, override?: ParsedContent) {
     this.content = params.content;
+    this.overridingContent = override;
     if (this.content) {
       const keywords = latexKeywords.latex_keywords;
       if (keywords.some((keyword: string) => this.content.includes(keyword))) {
@@ -49,7 +45,7 @@ export abstract class ParsedContent {
   protected content: string;
   protected abstract contentType: ContentType;
 
-  addProperty(property: ContentProperties) {
+  addProperty(property: ContentProperties): void {
     this.properties.push(property);
   }
   getProperties(): ContentProperties[] {
@@ -71,5 +67,12 @@ export abstract class ParsedContent {
   }
   getContentType(): ContentType {
     return this.contentType;
+  }
+  createOverridedContent(contentType: ContentType): IParsedContent {
+    return createParsedContent({
+      contentType,
+      content: this.content,
+      properties: this.properties,
+    });
   }
 }
