@@ -100,6 +100,13 @@ describe("ContentParser", () => {
     );
   });
 
+  it("should add property has tex if content has tex", () => {
+    const expectedContent = `abcd\\frac{1}{2}`;
+    const originalContent = inlineDelimiter + expectedContent + inlineDelimiter;
+    const parsedContent = parser.parse(originalContent)[0];
+    expect(parsedContent.getProperties()).toContain(ContentProperties.HAS_TEX);
+  });
+
   it("블록 표현식을 인라인 표현식으로 표현하는 경우 파싱 확인", () => {
     const originalContent = `$f(x)= \\begin{cases} -6\\sqrt{4-x}+12 &(x<3) \\\\ \\frac{1}{6}(x-9)^2 &(x \\ge 3) \\end{cases}$ 에 대하여 $x$ 에 대한 방정식 $|f(x)|=n-1$`;
     const parsedContents = parser.parse(originalContent);

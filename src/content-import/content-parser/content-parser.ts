@@ -29,11 +29,12 @@ class ContentBuffer {
 
     this.buffer = "";
 
-    return createParsedContent({
+    const result = createParsedContent({
       contentType: mode,
       content: content,
       properties,
     });
+    return result;
   }
   toggleMode(mode: ContentType): void {
     if (this.mode === mode) {
@@ -76,12 +77,16 @@ export class ContentParser implements IContentParser {
       let charIndex = 0;
       while (charIndex < line.length) {
         if (
+          (charIndex === 0 || line[charIndex - 1] !== "\\") &&
           line.substring(charIndex, charIndex + 2) === this.blockMathDelimiter
         ) {
           this.appendResult(this.buffer.flush());
           this.buffer.toggleMode(ContentType.LATEX_BLOCK);
           charIndex += 2;
-        } else if (line[charIndex] === this.inlineMathDelimiter) {
+        } else if (
+          (charIndex === 0 || line[charIndex - 1] !== "\\") &&
+          line[charIndex] === this.inlineMathDelimiter
+        ) {
           this.appendResult(this.buffer.flush());
           this.buffer.toggleMode(ContentType.LATEX_INLINE);
           charIndex += 1;
