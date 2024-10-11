@@ -36,7 +36,7 @@ export class CorrectBlockRange
 
     const result = ranges
       .reduce((acc, { start, end }) => {
-        return this.setBlockRange(acc, start, end);
+        return this.overrideContentToBlock(acc, start, end);
       }, content)
       .map((content, index) => {
         const contentProps = content.getProperties();
@@ -62,7 +62,7 @@ export class CorrectBlockRange
     return result;
   }
 
-  private setBlockRange(
+  private overrideContentToBlock(
     content: IParsedContent[],
     startingIndex: number,
     endingIndex: number
