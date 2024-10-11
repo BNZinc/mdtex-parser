@@ -2,7 +2,7 @@ import {
   createContentCorrector,
   IContentCorrector,
 } from "./content-corrector/content-corrector";
-import { contentParser, IContentParser } from "./content-parser/content-parser";
+import { ContentParser, IContentParser } from "./content-parser/content-parser";
 import { ContentProperties } from "./parsed-content-types/enum/content-enums";
 
 class ContentImporter {
@@ -29,12 +29,12 @@ export function getCorrectedContents(originalContents: string): string {
   const delimiterOverride = originalContents
     .replace(/\\\[|\\\]/g, "$$")
     .replace(/^(\\\\\(|\\\\\))$/, "$")
-    .replace(/\\\(/g, "(")
-    .replace(/\\\)/g, ")");
+    .replace(/\\\(/g, "$")
+    .replace(/\\\)/g, "$");
   const result = new ContentImporter(
     delimiterOverride,
-    contentParser,
-    createContentCorrector
+    new ContentParser(),
+    createContentCorrector()
   ).exportContents();
   return result;
 }
