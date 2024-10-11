@@ -132,5 +132,4 @@ dist
 .pnp.*
 
 
-res_*answer*.txt
-res_*question*.txt
+src/content-import/test-cases/res_*txt
