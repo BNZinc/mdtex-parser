@@ -37,7 +37,7 @@ describe("create-testcases-result-files", () => {
         `${asiscolor}${testcase.filename}(${testcase.index}): AS-IS\n${testcase}\n\n${tobecolor}${testcase.filename}(${testcase.index} TO-BE\n${result}${resetColor}`
       );
       fs.writeFileSync(
-        path.join(__dirname, `./test-cases/res_${testcase.filename}.txt`),
+        path.join(__dirname, `./test-cases/res_${testcase.filename}`),
         result,
         "utf-8"
       );
