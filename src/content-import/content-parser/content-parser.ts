@@ -4,7 +4,10 @@ import {
 } from "../parsed-content-types/enum/content-enums";
 import { createParsedContent } from "../parsed-content-types/parsed-content.factory";
 import { IParsedContent } from "../parsed-content-types/parsed-content.interface";
-
+export interface IContentParser {
+  appendResult(parsedContent: IParsedContent): void;
+  parse(fullContents: string): IParsedContent[];
+}
 class ContentBuffer {
   constructor(params: { defaultMode?: ContentType }) {
     this.mode = params.defaultMode ?? ContentType["MARKDOWN"];
@@ -43,7 +46,7 @@ type ParserParams = {
   inlineMathDelimiter: string;
   blockMathDelimiter: string;
 };
-export class ContentParser {
+export class ContentParser implements IContentParser {
   buffer: ContentBuffer;
   inlineMathDelimiter: string;
   blockMathDelimiter: string;
@@ -59,7 +62,7 @@ export class ContentParser {
     this.inlineMathDelimiter = ParserParams.inlineMathDelimiter;
     this.blockMathDelimiter = ParserParams.blockMathDelimiter;
   }
-  appendResult(parsedContent: IParsedContent) {
+  appendResult(parsedContent: IParsedContent): void {
     if (parsedContent.hasAnyPayload()) {
       this.toExportContents.push(parsedContent);
     }
@@ -97,4 +100,4 @@ export class ContentParser {
   }
 }
 
-const parser = new ContentParser();
+export const contentParser = new ContentParser();

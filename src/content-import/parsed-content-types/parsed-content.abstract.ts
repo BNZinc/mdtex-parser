@@ -71,6 +71,10 @@ export abstract class ParsedContent implements IParsedContent {
   getContentType(): ContentType {
     return this.contentType;
   }
+  getWrappedContent(): string {
+    return this._onGetWrappedContent();
+  }
+  protected abstract _onGetWrappedContent(): string;
   createOverridedContent(contentType: ContentType): IParsedContent {
     if (this.contentType === contentType) {
       return this;

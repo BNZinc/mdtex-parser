@@ -12,5 +12,6 @@ export interface IParsedContent {
   getContentLength(): number;
   getContent(): string;
   getContentType(): ContentType;
+  getWrappedContent(): string;
   createOverridedContent(contentType: ContentType): IParsedContent;
 }
