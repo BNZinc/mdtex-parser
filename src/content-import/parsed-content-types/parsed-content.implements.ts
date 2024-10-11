@@ -7,9 +7,9 @@ export class LaTeXInlineContent extends ParsedContent {
     const content = super.getContent();
     const lastHashIndex = content.lastIndexOf("#");
     if (lastHashIndex !== -1) {
-      return `$${content.slice(lastHashIndex + 1)}$`;
+      return `$${content.slice(lastHashIndex + 1).trim()}$`;
     }
-    return `$${content}$`;
+    return `$${content.trim()}$`;
   }
 }
 

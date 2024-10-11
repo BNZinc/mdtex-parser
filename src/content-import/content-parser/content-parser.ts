@@ -104,5 +104,3 @@ export class ContentParser implements IContentParser {
     return this.toExportContents;
   }
 }
-
-export const contentParser = new ContentParser();

@@ -18,7 +18,9 @@ export interface IContentCorrector {
   correct(contents: IParsedContent[]): IParsedContent[];
 }
 
-export const createContentCorrector = new ContentCorrector([
-  new CorrectBlockRange(),
-  new CheckMarkdownHasTeX(),
-]);
+export const createContentCorrector = () => {
+  return new ContentCorrector([
+    new CorrectBlockRange(),
+    new CheckMarkdownHasTeX(),
+  ]);
+};

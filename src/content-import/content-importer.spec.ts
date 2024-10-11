@@ -4,7 +4,7 @@ import { getCorrectedContents } from "./content-importer";
 
 describe("create-testcases-result-files", () => {
   const testcases: { filename: string; content: string; index: number }[] = [];
-  const testonly: string[] = ["1111111111-answer.txt"]; //["2024-10-09_14_38-answer.txt"];
+  const testonly: string[] = []; //["2024-10-09_14_38-answer.txt"];
   beforeAll(() => {
     const testCasesDir = path.resolve(__dirname, "./test-cases");
     const files = fs.readdirSync(testCasesDir);
