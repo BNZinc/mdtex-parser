@@ -3,6 +3,7 @@ import {
   IContentCorrector,
 } from "./content-corrector/content-corrector";
 import { contentParser, IContentParser } from "./content-parser/content-parser";
+import { ContentProperties } from "./parsed-content-types/enum/content-enums";
 
 class ContentImporter {
   constructor(
@@ -14,14 +15,20 @@ class ContentImporter {
   exportContents(): string {
     const parsedContents = this.parser.parse(this.originalContents);
     const correctedContents = this.corrector.correct(parsedContents);
-    return correctedContents.map((content) => content.getContent()).join("\n");
+    return correctedContents
+      .map((content) => {
+        if (ContentProperties.HAS_NEWLINE in content.getProperties()) {
+          return content.getWrappedContent() + "\n";
+        } else return content.getWrappedContent();
+      })
+      .join("");
   }
 }
 
-export function getContentImporter(originalContents: string) {
+export function getContentImporter(originalContents: string): string {
   return new ContentImporter(
     originalContents,
     contentParser,
     createContentCorrector
-  );
+  ).exportContents();
 }
