@@ -1,0 +1,153 @@
+
+## 문제 분석
+
+주어진 요소들은 다음과 같습니다:
+
+- **손실 함수 (Loss function)**: $L(\omega) = x \cdot y$, 여기서 $\omega = (x, y)$
+- **학습률 (Learning rate, η)**: $\eta = 1$
+- **초기 가중치 (Initial weights, $\omega_0$)**: $\omega_0 = (1, 2)$
+- **반복 횟수 (Iterations)**: 3회
+- **AdaGrad 알고리즘 사용**
+- **$ϵ$ 값**: $ϵ = 0$
+
+AdaGrad 알고리즘은 각 파라미터에 대해 개별적으로 학습률을 조정하여 학습을 진행하는 최적화 기법입니다. 주어진 손실 함수를 최소화하기 위해, 각 반복(iteration)마다 가중치 벡터 $\omega$를 업데이트하게 됩니다.
+
+## 풀이 방향
+
+1. **초기 설정**:
+   - 가중치 벡터 $\omega_0 = (1, 2)$
+   - 그래디언트 제곱합 벡터 $G = (0, 0)$ (각 파라미터에 대한 그래디언트 제곱의 누적합)
+2. **반복(iteration)마다**:
+   - 현재 가중치 $\omega = (x, y)$에 대한 손실 함수 $L(\omega) = x \cdot y$의 그래디언트 계산
+     - $\frac{\partial L}{\partial x} = y$
+     - $\frac{\partial L}{\partial y} = x$
+   - 그래디언트 제곱합 벡터 $G$ 업데이트: $G = G + (\text{그래디언트})^2$
+   - 가중치 업데이트: $\omega = \omega - \frac{\eta}{\sqrt{G}} \cdot \text{그래디언트}$
+     - 여기서 $ϵ = 0$이므로 분모는 $\sqrt{G}$만 고려
+3. **3번의 반복을 통해 최종 가중치 $\omega$ 도출**
+
+## 풀이 단계
+
+### 초기 설정
+
+\[
+\omega^{(0)} = \begin{bmatrix} x^{(0)} \\ y^{(0)} \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}, \quad G^{(0)} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+\]
+
+### 1회차 반복 (Iteration 1)
+
+**현재 가중치**:
+
+\[
+\omega^{(0)} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}
+\]
+
+**손실 함수**:
+
+\[
+L(\omega^{(0)}) = x^{(0)} \cdot y^{(0)} = 1 \cdot 2 = 2
+\]
+
+**그래디언트 계산**:
+
+\[
+\nabla L = \begin{bmatrix} \frac{\partial L}{\partial x} \\ \frac{\partial L}{\partial y} \end{bmatrix} = \begin{bmatrix} y^{(0)} \\ x^{(0)} \end{bmatrix} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}
+\]
+
+**그래디언트 제곱합 업데이트**:
+
+\[
+G^{(1)} = G^{(0)} + (\nabla L)^2 = \begin{bmatrix} 0 \\ 0 \end{bmatrix} + \begin{bmatrix} (2)^2 \\ (1)^2 \end{bmatrix} = \begin{bmatrix} 4 \\ 1 \end{bmatrix}
+\]
+
+**가중치 업데이트**:
+
+\[
+\omega^{(1)} = \omega^{(0)} - \frac{\eta}{\sqrt{G^{(1)}}} \cdot \nabla L = \begin{bmatrix} 1 \\ 2 \end{bmatrix} - 1 \cdot \begin{bmatrix} \frac{2}{\sqrt{4}} \\ \frac{1}{\sqrt{1}} \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \end{bmatrix} - \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+\]
+
+### 2회차 반복 (Iteration 2)
+
+**현재 가중치**:
+
+\[
+\omega^{(1)} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+\]
+
+**손실 함수**:
+
+\[
+L(\omega^{(1)}) = x^{(1)} \cdot y^{(1)} = 0 \cdot 1 = 0
+\]
+
+**그래디언트 계산**:
+
+\[
+\nabla L = \begin{bmatrix} \frac{\partial L}{\partial x} \\ \frac{\partial L}{\partial y} \end{bmatrix} = \begin{bmatrix} y^{(1)} \\ x^{(1)} \end{bmatrix} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+\]
+
+**그래디언트 제곱합 업데이트**:
+
+\[
+G^{(2)} = G^{(1)} + (\nabla L)^2 = \begin{bmatrix} 4 \\ 1 \end{bmatrix} + \begin{bmatrix} (1)^2 \\ (0)^2 \end{bmatrix} = \begin{bmatrix} 5 \\ 1 \end{bmatrix}
+\]
+
+**가중치 업데이트**:
+
+\[
+\omega^{(2)} = \omega^{(1)} - \frac{\eta}{\sqrt{G^{(2)}}} \cdot \nabla L = \begin{bmatrix} 0 \\ 1 \end{bmatrix} - 1 \cdot \begin{bmatrix} \frac{1}{\sqrt{5}} \\ \frac{0}{\sqrt{1}} \end{bmatrix} = \begin{bmatrix} 0 \\ 1 \end{bmatrix} - \begin{bmatrix} \frac{1}{\sqrt{5}} \\ 0 \end{bmatrix} = \begin{bmatrix} -\frac{1}{\sqrt{5}} \\ 1 \end{bmatrix}
+\]
+
+### 3회차 반복 (Iteration 3)
+
+**현재 가중치**:
+
+\[
+\omega^{(2)} = \begin{bmatrix} -\frac{1}{\sqrt{5}} \\ 1 \end{bmatrix}
+\]
+
+**손실 함수**:
+
+\[
+L(\omega^{(2)}) = x^{(2)} \cdot y^{(2)} = -\frac{1}{\sqrt{5}} \cdot 1 = -\frac{1}{\sqrt{5}}
+\]
+
+**그래디언트 계산**:
+
+\[
+\nabla L = \begin{bmatrix} \frac{\partial L}{\partial x} \\ \frac{\partial L}{\partial y} \end{bmatrix} = \begin{bmatrix} y^{(2)} \\ x^{(2)} \end{bmatrix} = \begin{bmatrix} 1 \\ -\frac{1}{\sqrt{5}} \end{bmatrix}
+\]
+
+**그래디언트 제곱합 업데이트**:
+
+\[
+G^{(3)} = G^{(2)} + (\nabla L)^2 = \begin{bmatrix} 5 \\ 1 \end{bmatrix} + \begin{bmatrix} (1)^2 \\ \left(-\frac{1}{\sqrt{5}}\right)^2 \end{bmatrix} = \begin{bmatrix} 6 \\ 1 + \frac{1}{5} \end{bmatrix} = \begin{bmatrix} 6 \\ \frac{6}{5} \end{bmatrix}
+\]
+
+**가중치 업데이트**:
+
+\[
+\omega^{(3)} = \omega^{(2)} - \frac{\eta}{\sqrt{G^{(3)}}} \cdot \nabla L = \begin{bmatrix} -\frac{1}{\sqrt{5}} \\ 1 \end{bmatrix} - 1 \cdot \begin{bmatrix} \frac{1}{\sqrt{6}} \\ \frac{-\frac{1}{\sqrt{5}}}{\sqrt{\frac{6}{5}}} \end{bmatrix} = \begin{bmatrix} -\frac{1}{\sqrt{5}} - \frac{1}{\sqrt{6}} \\ 1 - \left(-\frac{1}{\sqrt{5}} \cdot \frac{1}{\sqrt{\frac{6}{5}}}\right) \end{bmatrix}
+\]
+
+계산을 간소화하면:
+
+\[
+\omega^{(3)} = \begin{bmatrix} -\frac{1}{\sqrt{5}} - \frac{1}{\sqrt{6}} \\ 1 + \frac{1}{\sqrt{6}} \end{bmatrix}
+\]
+
+## 최종 결과
+
+3번의 AdaGrad 업데이트 과정을 거친 후의 최종 가중치 벡터 $\omega^{(3)}$는 다음과 같습니다:
+
+\[
+\omega^{(3)} = \begin{bmatrix} -\left( \frac{1}{\sqrt{5}} + \frac{1}{\sqrt{6}} \right) \\ 1 + \frac{1}{\sqrt{6}} \end{bmatrix}
+\]
+
+이를 소수점으로 근사하면:
+
+\[
+\omega^{(3)} \approx \begin{bmatrix} -\left( 0.4472 + 0.4082 \right) \\ 1 + 0.4082 \end{bmatrix} = \begin{bmatrix} -0.8554 \\ 1.4082 \end{bmatrix}
+\]
+
+따라서, 3번의 AdaGrad 반복 후 가중치 벡터는 약 $\omega^{(3)} = \begin{bmatrix} -0.8554 \\ 1.4082 \end{bmatrix}$ 가 됩니다.

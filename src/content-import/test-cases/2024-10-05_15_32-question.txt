@@ -1,0 +1,7 @@
+1. (100 pnts = 20 x 5) For a signal $x(t) = \{\sin(27\pi t)\}^2$,
+(a). What is the fundamental period of x(t)?
+(b). Represent this in a continuous-time Fourier series.
+(c). Represent this in a continuous-time Fourier transform.
+(d). Suppose this signal is sampled with sampling period T= 1 msec. Find its sampled signal.
+(e). Discuss whether or not you can reconstruct the original signal x(t) perfectely from its sampled
+signal x[n] in (d).

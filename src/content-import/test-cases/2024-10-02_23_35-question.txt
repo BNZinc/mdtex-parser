@@ -1,0 +1,13 @@
+Muir Manufacturing produces two popular grades of commercial carpeting among its many other products.
+In the coming production period, Muir needs to decide how many rolls of each grade should be produced in
+order to maximize profit. Each roll of Grade X carpet uses 50 units of synthetic fiber, requires 25 hours of
+production time, and needs 20 units of foam backing. Each roll of Grade Y carpet uses 40 units of
+synthetic fiber, requires 28 hours of production time, and needs 15 units of foam backing.
+The profit per roll of Grade X carpet is $200 and the profit per roll of Grade Y carpet is $160. In the
+coming production period, Muir has 3000 units of synthetic fiber available for use. Workers have been
+scheduled to provide at least 1800 hours of production time (overtime is a possibility). The company has
+1500 units of foam backing available for use.
+
+Develop and solve a linear programming model for this problem.
+
+TOPIC: Modeling and graphical solution

@@ -17,7 +17,7 @@ class ContentImporter {
     const correctedContents = this.corrector.correct(parsedContents);
     return correctedContents
       .map((content) => {
-        if (ContentProperties.HAS_NEWLINE in content.getProperties()) {
+        if (content.getProperties().includes(ContentProperties.HAS_NEWLINE)) {
           return content.getWrappedContent() + "\n";
         } else return content.getWrappedContent();
       })
@@ -25,10 +25,16 @@ class ContentImporter {
   }
 }
 
-export function getContentImporter(originalContents: string): string {
-  return new ContentImporter(
-    originalContents,
+export function getCorrectedContents(originalContents: string): string {
+  const delimiterOverride = originalContents
+    .replace(/\\\[|\\\]/g, "$$")
+    .replace(/^(\\\\\(|\\\\\))$/, "$")
+    .replace(/\\\(/g, "(")
+    .replace(/\\\)/g, ")");
+  const result = new ContentImporter(
+    delimiterOverride,
     contentParser,
     createContentCorrector
   ).exportContents();
+  return result;
 }

@@ -1,0 +1,12 @@
+6. 모든 성분이 실수이고 크기가 $2 \times 2$인 행렬로 이루어진
+벡터공간 $M_2(\mathbb{R})$ 위에 내적(inner product)을 $A, B \in M_2(\mathbb{R})$에
+대하여 다음과 같이 정의하자.
+
+$<A, B> = tr(AB^T)$
+
+$\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}, \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}$가 생성하는 $M_2(\mathbb{R})$의 부분공간을 $W$라 하고,
+$M_2(\mathbb{R})$에서 $W$ 위로의 정사영변환(orthogonal projection)을
+$\phi : M_2(\mathbb{R}) \to W$라 할 때, $A = \begin{pmatrix} 4 & 2 \\ 3 & 1 \end{pmatrix}$에 대하여 $\phi(A)$와
+$\phi$의 대각합(trace)을 각각 풀이 과정과 함께 쓰시오.
+(단, $B^T$는 $B$의 전치행렬(transpose matrix)이고, $tr(AB^T)$는
+$AB^T$의 대각합이다.) [4점]

@@ -1,0 +1,5 @@
+Loss function, L(w)w∈{x,y} = xy, η = 1, ωο = (1, 2), iteration = 3, AdaGrad
+ϵ 은 0으로 설정하고 풀 것
+수식의 내용을 자세하게 쓰시오
+
+
