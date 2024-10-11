@@ -1,17 +1,32 @@
-import { ContentType } from "./enum/content-enums";
+import { ContentProperties, ContentType } from "./enum/content-enums";
 import { ParsedContent } from "./parsed-content.abstract";
 
 export class LaTeXInlineContent extends ParsedContent {
   contentType = ContentType.LATEX_INLINE;
   protected _onGetWrappedContent(): string {
-    return `$${super.getContent()}$`;
+    const content = super.getContent();
+    const lastHashIndex = content.lastIndexOf("#");
+    if (lastHashIndex !== -1) {
+      return `$${content.slice(lastHashIndex + 1)}$`;
+    }
+    return `$${content}$`;
   }
 }
 
 export class LaTeXBlockContent extends ParsedContent {
   contentType = ContentType.LATEX_BLOCK;
   protected _onGetWrappedContent(): string {
-    return `$$${super.getContent()}$$`;
+    const headding = this.getProperties().includes(
+      ContentProperties.HAS_BEGINNING_BLOCK
+    )
+      ? "$$"
+      : "";
+    const tail = this.getProperties().includes(
+      ContentProperties.HAS_ENDING_BLOCK
+    )
+      ? "$$"
+      : "";
+    return `${headding}${super.getContent()}${tail}`;
   }
 }
 

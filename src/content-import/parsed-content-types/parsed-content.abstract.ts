@@ -15,6 +15,10 @@ export function getEnumKeyByValue(
 
 export abstract class ParsedContent implements IParsedContent {
   overridingContent?: ParsedContent;
+  protected properyPayload: ContentPropertyPayload = {};
+  protected properties: ContentProperties[] = [];
+  protected content: string;
+  protected abstract contentType: ContentType;
   constructor(params: { content: string }, override?: ParsedContent) {
     this.content = params.content;
     this.overridingContent = override;
@@ -40,10 +44,6 @@ export abstract class ParsedContent implements IParsedContent {
       }
     }
   }
-  protected properyPayload: ContentPropertyPayload = {};
-  protected properties: ContentProperties[] = [];
-  protected content: string;
-  protected abstract contentType: ContentType;
 
   addProperty(property: ContentProperties, payload?: string): void {
     this.properties.push(property);
