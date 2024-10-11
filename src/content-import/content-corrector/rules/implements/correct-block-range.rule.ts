@@ -15,6 +15,7 @@ export class CorrectBlockRange
   implements ICorrectionRule
 {
   protected ruleName: string = CorrectBlockRange.name;
+  protected editedIndexes: Set<number> = new Set();
 
   _onApply(content: IParsedContent[]): IParsedContent[] {
     const ranges: Range[] = [];
@@ -33,9 +34,30 @@ export class CorrectBlockRange
       }
     });
 
-    const result = ranges.reduce((acc, { start, end }) => {
-      return this.setBlockRange(acc, start, end);
-    }, content);
+    const result = ranges
+      .reduce((acc, { start, end }) => {
+        return this.setBlockRange(acc, start, end);
+      }, content)
+      .map((content, index) => {
+        const contentProps = content.getProperties();
+        if (
+          !this.editedIndexes.has(index) &&
+          content.getContentType() === ContentType.LATEX_BLOCK
+        ) {
+          if (
+            contentProps.includes(ContentProperties.HAS_BLOCK_ONLY_CONTENT) ===
+            false
+          ) {
+            if (contentProps.includes(ContentProperties.HAS_TEX)) {
+              return content.createOverridedContent(ContentType.LATEX_INLINE);
+            } else {
+              return content.createOverridedContent(ContentType.MARKDOWN);
+            }
+          }
+        }
+
+        return content;
+      });
 
     return result;
   }
@@ -52,6 +74,7 @@ export class CorrectBlockRange
         correctingContents.push(
           content.createOverridedContent(ContentType.LATEX_BLOCK)
         );
+        this.editedIndexes.add(currentIndex);
       } else {
         correctingContents.push(content);
       }

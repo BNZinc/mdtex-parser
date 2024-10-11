@@ -15,6 +15,42 @@ describe("CorrectionRule", () => {
     correctionRule = new CorrectBlockRange();
   });
 
+  it("블록에 대한 단서가 없는 블록 구문은 HAS_TEX 구문에 따라 마크다운 또는 Inline으로 변경", () => {
+    const content: IParsedContent[] = [
+      createParsedContent({
+        contentType: ContentType.MARKDOWN,
+        content: "A",
+        properties: [],
+      }),
+      createParsedContent({
+        contentType: ContentType.LATEX_BLOCK,
+        content: "B",
+        properties: [],
+      }),
+      createParsedContent({
+        contentType: ContentType.LATEX_BLOCK,
+        content: "C",
+        properties: [ContentProperties.HAS_TEX],
+      }),
+    ];
+
+    const result = correctionRule.apply(content);
+    const filteredResult = result.map((content) => {
+      return {
+        contentType: content.getContentType(),
+        content: content.getContent(),
+        properties: content.getProperties(),
+        propertyPayload: content.getPayload(),
+      };
+    });
+
+    expectContent(filteredResult, ContentType.MARKDOWN, "A", []);
+    expectContent(filteredResult, ContentType.MARKDOWN, "B", []);
+    expectContent(filteredResult, ContentType.LATEX_INLINE, "C", [
+      ContentProperties.HAS_TEX,
+    ]);
+  });
+
   it("MARKDOWN이지만 begin 문이 있는 경우와 같이 컨텐츠의 타입과 프로퍼티의 속성이 일치하지 않는 경우, 타입을 변경", () => {
     const content: IParsedContent[] = [
       createParsedContent({
