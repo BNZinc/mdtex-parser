@@ -1,6 +1,6 @@
 {
-  "name": "mdtex-parser",
-  "version": "1.0.5",
+  "name": "@bnz-org/mdtex-parser",
+  "version": "1.0.6",
   "description": "TeX 문법이 혼합된 Markdown 문서의 구문 식별",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
