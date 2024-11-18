@@ -3,7 +3,11 @@ import {
   IContentCorrector,
 } from "./content-corrector/content-corrector";
 import { ContentParser, IContentParser } from "./content-parser/content-parser";
-import { ContentProperties } from "./parsed-content-types/enum/content-enums";
+import {
+  ContentProperties,
+  ContentType,
+} from "./parsed-content-types/enum/content-enums";
+import { IParsedContent } from "./parsed-content-types/parsed-content.interface";
 
 class ContentImporter {
   constructor(
@@ -12,16 +16,38 @@ class ContentImporter {
     protected readonly corrector: IContentCorrector
   ) {}
 
+  private shouldAddSpace(currentContent: IParsedContent, lastType: ContentType): boolean {
+    return [ContentType.LATEX_BLOCK, ContentType.LATEX_INLINE].includes(lastType) &&
+           currentContent.getContentType() === lastType;
+  }
+
+  private formatContent(content: IParsedContent, lastContentType: ContentType | undefined): string {
+    let result = content.getWrappedContent();
+    
+    if (content.getProperties().includes(ContentProperties.HAS_NEWLINE)) {
+      result += "\n";
+    }
+    if (lastContentType !== undefined && this.shouldAddSpace(content, lastContentType)) {
+      result = " " + result;
+    }
+    
+    return result;
+  }
+
   exportContents(): string {
     const parsedContents = this.parser.parse(this.originalContents);
     const correctedContents = this.corrector.correct(parsedContents);
-    return correctedContents
-      .map((content) => {
-        if (content.getProperties().includes(ContentProperties.HAS_NEWLINE)) {
-          return content.getWrappedContent() + "\n";
-        } else return content.getWrappedContent();
+    let lastContentType: ContentType | undefined = undefined;
+
+    const correctedResult = correctedContents
+      .map(content => {
+        const formattedContent = this.formatContent(content, lastContentType);
+        lastContentType = content.getContentType();
+        return formattedContent;
       })
       .join("");
+
+    return correctedResult;
   }
 }
 

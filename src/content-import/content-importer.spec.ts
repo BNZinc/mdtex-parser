@@ -44,3 +44,17 @@ describe("create-testcases-result-files", () => {
     });
   });
 });
+
+
+describe("Correctness of the result", () => {
+  it("should add space between same type contents", () => {
+    const result = getCorrectedContents('가나다라$1+1$\\frac{1}{2}');
+    expect(result).toBe('가나다라$1+1$ $\\frac{1}{2}$\n\n');
+  });
+
+  it("should not add space between different type contents", () => {
+    const result = getCorrectedContents('가나다라$1+1$가나다라\n가나$1+1$');
+    expect(result).toBe('가나다라$1+1$가나다라\n가나$1+1$\n\n');
+  });
+
+});
