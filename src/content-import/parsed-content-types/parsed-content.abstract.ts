@@ -6,12 +6,7 @@ import {
 } from "./enum/content-enums";
 import { createParsedContent } from "./parsed-content.factory";
 import { IParsedContent } from "./parsed-content.interface";
-export function getEnumKeyByValue(
-  enumObj: any,
-  value: any
-): string | undefined {
-  return Object.keys(enumObj).find((key) => enumObj[key] === value);
-}
+
 
 export abstract class ParsedContent implements IParsedContent {
   overridingContent?: ParsedContent;

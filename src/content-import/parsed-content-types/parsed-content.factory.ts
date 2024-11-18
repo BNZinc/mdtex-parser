@@ -4,11 +4,9 @@ import {
   ContentType,
 } from "./enum/content-enums";
 import { ParsedContent } from "./parsed-content.abstract";
-import {
-  LaTeXBlockContent,
-  LaTeXInlineContent,
-  MarkdownContent,
-} from "./parsed-content.implements";
+import { LaTeXInlineContent } from "./implements/latex-inline.impl";
+import { LaTeXBlockContent } from "./implements/latex-block.impl";
+import { MarkdownContent } from "./implements/markdown.impl";
 import { IParsedContent } from "./parsed-content.interface";
 
 const typeMap = {

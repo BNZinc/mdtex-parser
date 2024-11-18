@@ -19,6 +19,7 @@
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "test": "jest",
+    "coverage": "jest --coverage",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"
   },

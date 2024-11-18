@@ -1,14 +1,17 @@
 import { ContentParser } from "./content-parser";
-import { getEnumKeyByValue } from "../parsed-content-types/parsed-content.abstract";
-import {
-  LaTeXBlockContent,
-  LaTeXInlineContent,
-} from "../parsed-content-types/parsed-content.implements";
+import { LaTeXInlineContent } from "../parsed-content-types/implements/latex-inline.impl";
+import { LaTeXBlockContent } from "../parsed-content-types/implements/latex-block.impl";
 import {
   ContentProperties,
   ContentType,
 } from "../parsed-content-types/enum/content-enums";
 
+export function getEnumKeyByValue(
+  enumObj: any,
+  value: any
+): string | undefined {
+  return Object.keys(enumObj).find((key) => enumObj[key] === value);
+}
 const inlineDelimiter = "$";
 const blockDelimiter = "$$";
 const hideLog = true;
