@@ -1,6 +1,6 @@
 {
   "name": "@bnz-org/mdtex-parser",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "TeX 문법이 혼합된 Markdown 문서의 구문 식별",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,8 +10,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/BNZinc/mdtex-parser.git",
-    "directory": "packages/mdtex-parser"
+    "url": "https://github.com/BNZinc/mdtex-parser.git"
   },
   "author": "BearMett <agomdole@gmail.com>",
   "license": "Apache-2.0",
@@ -21,7 +20,12 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prepublishOnly": "pnpm run build"
+  },
+  "engines": {
+    "node": ">=18.18",
+    "pnpm": ">=8.6.7 <9"
   },
   "devDependencies": {
     "@types/jest": "^29.5.13",
