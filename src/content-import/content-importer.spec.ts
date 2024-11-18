@@ -34,7 +34,7 @@ describe("create-testcases-result-files", () => {
       const tobecolor = "\x1b[32m";
       const result = getCorrectedContents(testcase.content);
       console.log(
-        `${asiscolor}${testcase.filename}(${testcase.index}): AS-IS\n${testcase}\n\n${tobecolor}${testcase.filename}(${testcase.index} TO-BE\n${result}${resetColor}`
+        `${testcase.filename}(${testcase.index}):\n${asiscolor}AS-IS\n\n${testcase.content}(${testcase.index} \n${tobecolor}TO-BE\n${result}${resetColor}`
       );
       fs.writeFileSync(
         path.join(__dirname, `./test-cases/res_${testcase.filename}`),

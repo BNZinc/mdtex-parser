@@ -28,7 +28,7 @@ export abstract class ParsedContent implements IParsedContent {
         this.addProperty(ContentProperties.HAS_TEX);
       }
       if (this.content.includes("\\begin")) {
-        const beginType = this.content.match(/\\begin{(\w+)}/)?.[1];
+        const beginType = /\\begin{(\w+)}/.exec(this.content)?.[1];
         if (beginType) {
           this.properyPayload[ContentProperties.HAS_BEGINNING_BLOCK] =
             beginType;
@@ -36,7 +36,7 @@ export abstract class ParsedContent implements IParsedContent {
         this.addProperty(ContentProperties.HAS_BEGINNING_BLOCK);
       }
       if (this.content.includes("\\end")) {
-        const endType = this.content.match(/\\end{(\w+)}/)?.[1];
+        const endType = /\\end{(\w+)}/.exec(this.content)?.[1];
         if (endType) {
           this.properyPayload[ContentProperties.HAS_ENDING_BLOCK] = endType;
         }
