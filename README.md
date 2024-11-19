@@ -40,3 +40,7 @@ mdtex-parser는 TeX 문법이 혼합된 Markdown 문서를 받아, LaTeX 인라�
 Designed by Young Min 'Matthew' Kim
 
 Implements By. Young Min 'Matthew' Kim
+
+## 라이선스
+
+이 프로젝트는 Apache License 2.0 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
