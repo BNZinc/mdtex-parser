@@ -9,6 +9,28 @@ mdtex-parser는 TeX 문법이 혼합된 Markdown 문서를 받아, LaTeX 인라�
 - LaTeX 문법이 포함된 markdown 기반 문서를 받아 AS-IS 구분자와 내부 내용을 분석합니다.
 - 분석된 내부 내용에 따라 잘못 표현되었을것으로 유추되는 구문을 올바른 구문으로 변경합니다
 
+## 사용 예시
+
+`getCorrectedContents`는 텍스트와 LaTeX 수식이 포함된 문자열을 교정하는 함수입니다.
+
+```typescript
+import { getCorrectedContents } from "@bnz-org/mdtex-parser";
+
+// LaTeX 수식이 포함된 텍스트 교정
+const text = 'inline plus and text fraction$1+1$\\frac{1}{2}';
+const corrected = getCorrectedContents(text);
+console.log(corrected);
+//"inline plus and text fraction$1+1$ $\\frac{1}{2}$\n\n"
+```
+
+### 수식 처리 규칙
+
+- LaTeX 수식은 `$...$` 혹은 `$$...$$` 으로 감싸야 합니다
+- `$...$` 는 텍스트와 함께 사용할 수 있는 인라인 수식을 표시합니다.
+- `$$...$$` 는 여러 해를 표시하는 등 하나의 블록을 구성하는 begin 을 사용할 때 사용합니다.
+- `getCorrectedContents` 함수는 입력을 분석하고 어떤 부분이 인라인 수식이거나 블록 수식으로 판단되는데 적절한 구분자가 없는경우 구분자를 만들거나 지웁니다.
+- 결과물에는 개행 문자가 두번 붙습니다.
+
 ## 용어
 
 **Tex**: 복잡한 수식을 표현하기 위한 언어입니다.
